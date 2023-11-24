@@ -1,4 +1,4 @@
-# dunmp adafruit iot data to CSV file?
+# dump adafruit iot data to CSV file?
 # robcranfill
 # sys.arg[1] must be Adafruit AIO API key
 

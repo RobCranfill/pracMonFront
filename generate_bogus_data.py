@@ -1,4 +1,4 @@
-# test of adafruit iot lib
+# generate some good-looking data!
 # robcranfill
 # sys.arg[1] must be Adafruit AIO API key
 
