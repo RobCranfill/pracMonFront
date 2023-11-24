@@ -16,7 +16,7 @@
       // Specify the configuration items and data for the chart
       var option = {
         title: {
-          text: 'Practice Monitor - Sept 23-29'
+          text: 'Practice Monitor - Nov 20-26'
         },
         tooltip: {},
         xAxis: {
@@ -26,7 +26,7 @@
         series: [
 
           <?php
-          passthru('/usr/bin/python3 ./out1.py');
+          passthru('/usr/bin/python3 ./get_session_data.py');
           ?>
         ]
       };
