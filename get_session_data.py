@@ -1,3 +1,7 @@
+# This will be called by the PHP page to generate the chart data.
+# robcranfill
+# Simply output the Apache EChart JSON fragment to stdout.
+
 
 print("            {")
 print("              data: [10, 20, 20, 35, 45, 25, 0],")
