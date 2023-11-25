@@ -2,6 +2,7 @@
 # robcranfill
 # sys.arg[1] must be Adafruit AIO API key
 
+import datetime
 import json
 import random
 import sys
@@ -17,6 +18,7 @@ api_key = sys.argv[1]
 
 # This works for a feed in the "Default" group
 FEED_NAME = "perfdata"
+
 # How is this name supposed to be formatted? neither "/" nor "." work.
 # FEED_NAME = "PracticeMonitor.perfdata"
 # Perhaps all lower case would have worked. Not sure I want to use a group anyway.
@@ -27,57 +29,53 @@ FEED_NAME = "perfdata"
 # >>> f
 # [Feed(name='perfdata', key='perfdata', id=2660025, description='Feed for PerformanceMonitor project.', 
 # unit_type=None, unit_symbol=None, history=True, visibility='private', license=None, status_notify=False, 
-# status_timeout=4320), Feed(name='perfdata', key='practicemonitor.perfdata', id=2660022, description='', 
+# status_timeout=4320), 
+# Feed(name='perfdata', key='practicemonitor.perfdata', id=2660022, description='', 
 # unit_type=None, unit_symbol=None, history=True, visibility='private', license=None, status_notify=False, 
 # status_timeout=4320)]
 #
 
 
-# not really what we want anymore
-def generate_old_test_data():
-    result = []
-    t_start = time.time()
-    print(f"sess#\tstart\tdur (sec)")
-    for i in range(10):
-        t_duration = random.randint(60, 600)
-        record = f"{i}\t{time.ctime(t_start)}\t{t_duration}"
-        print(record)
-        t_start += t_duration + random.randint(600, 1200)
-        result.append(record)
-    return result
-
-# As per main code. Refactor?
-JSON_KEY_TS     = "SeshNumber"
 JSON_KEY_START  = "SeshStart"
-JSON_KEY_END    = "SeshEnd"
+JSON_KEY_LENGTH = "SeshLength"
 JSON_KEY_NOTES  = "SeshNotes"
 
-def format_as_json(total_sessions, session_start_sec, session_end_sec, session_notes):
+def format_as_json(session_start_str, session_length_sec, session_notes):
 
-    one_record = [{ JSON_KEY_TS:    total_sessions,
-                    JSON_KEY_START: time.ctime(session_start_sec),
-                    JSON_KEY_END:   time.ctime(session_end_sec),
-                    JSON_KEY_NOTES: session_notes
+    one_record = [{ 
+                    JSON_KEY_START:  session_start_str,
+                    JSON_KEY_LENGTH: session_length_sec,
+                    JSON_KEY_NOTES:  session_notes
                     }]
     return json.dumps(one_record)
 
 
 # create some semi-random session data
 # return a list of JSON strings: the data
-def generate_json_test_data():
+
+# generate data for one day, starting at indicated time
+#
+def generate_json_test_data(year=2023, month=1, day=1, hour=9):
+
+    t_start = datetime.datetime(year, month, day, hour)
+    # print(f"Generate data starting {t_start} = {t_start.strftime('%s')}")
 
     result = []
-    t_start = time.time()
-    print(f"sess#\tstart\tdur (sec)")
-    for i in range(random.randint(5, 15)): # 5-15 sessions
+    for i in range(random.choice([0, 1, 2, 2, 2, 3, 3, 3, 4])): # number of sessions
 
-        t_duration = random.randint(60, 600)
-        t_start += t_duration + random.randint(600, 1200)
+        gap_sec = random.randint(600, 60*60*2)
+        t_start += datetime.timedelta(seconds=gap_sec)
 
-        json = format_as_json(i, t_start, t_start + t_duration, random.randint(1000, 10000))
-        # print(json)
+        duration_sec = random.randint(600, 3600)
+        keypresses = random.randint(1000, 10000)
+        # print(f" - Session {i}: {t_start} for {datetime.timedelta(seconds=duration_sec)} "
+        #       f"(gap {datetime.timedelta(seconds=gap_sec)})")
+
+        json = format_as_json(t_start.isoformat(), duration_sec, keypresses)
         result.append(json)
-        
+
+        t_start += datetime.timedelta(seconds=duration_sec)
+
     return result
 
 
@@ -94,9 +92,8 @@ def send_data(api_key, data):
         print(e)
         print("Bummer!")
 
+d = generate_json_test_data(year=2023, month=1, day=1, hour=8)
+print(f"Generated {len(d)} data points:\n{d}")
 
-# d = generate_old_test_data()
-d = generate_json_test_data()
-print(f"{len(d)} data points:\n{d}")
-
-send_data(api_key, d)
+print("NOT sending!")
+# send_data(api_key, d)
