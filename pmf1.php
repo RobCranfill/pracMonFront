@@ -4,8 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <title>Practice Monitor</title>
-    <!-- Apache ECharts -->
+
+    <!-- load Apache ECharts -->
     <script src="echarts.js"></script>
+
   </head>
 
   <body>
@@ -14,12 +16,13 @@
     <div id="main" style="width: 600px;height:400px;"></div>
 
     <script type="text/javascript">
+      
       // Initialize the echarts instance based on the prepared dom
       var myChart = echarts.init(document.getElementById('main'));
 
       <?php
 
-      // in yy/mm/dd format
+      // in mm/dd/yyyy format
       $start = $_GET['start'];
       if ($start == null) {
         $start = '11/01/2023';
@@ -29,7 +32,7 @@
       // Specify the configuration items and data for the chart
       var option = {
         title: {
-          text: 'Practice Monitor - <?= $start ?>'
+          text: 'Practice Monitor - Week of <?= $start ?>'
         },
         tooltip: {},
         xAxis: {
@@ -41,18 +44,13 @@
           // invoke our Python code to retrieve the IOT data!
           <?php
 
-            $api_key = $_GET['api_key'];
-            if ($api_key == null) {
-              // TODO: throw error?
-              }
-
             // in yy/mm/dd format
             $start = $_GET['start'];
             if ($start == null) {
               $start = '11/01/2023';
             }
       
-          passthru('/usr/bin/python3 ./get_session_data.py $api_key $start');
+          passthru('/usr/bin/python3 ./get_session_data.py `cat aio_secret.text` $start');
           ?>
         ]
       };

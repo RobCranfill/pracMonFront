@@ -61,7 +61,7 @@ def generate_json_test_data(year=2023, month=1, day=1, hour=9):
     # print(f"Generate data starting {t_start} = {t_start.strftime('%s')}")
 
     result = []
-    for i in range(random.choice([0, 1, 2, 2, 2, 3, 3, 3, 4])): # number of sessions
+    for i in range(random.choice([0, 1, 2, 2, 2, 3, 3, 3, 4, 4])): # number of sessions
 
         gap_sec = random.randint(600, 60*60*2)
         t_start += datetime.timedelta(seconds=gap_sec)
@@ -92,8 +92,13 @@ def send_data(api_key, data):
         print(e)
         print("Bummer!")
 
-d = generate_json_test_data(year=2023, month=1, day=1, hour=8)
-print(f"Generated {len(d)} data points:\n{d}")
+all_days = []
+for d_gen in range(1, 8):
+    day_data = generate_json_test_data(year=2023, month=10, day=d_gen, hour=8)
+    print(f"Generated {len(day_data)} data points:\n{day_data}")
+    all_days += day_data
+
+print(f"* All days: {len(all_days)} sessions:\n{all_days}")
 
 print("NOT sending!")
-# send_data(api_key, d)
+send_data(api_key, all_days)

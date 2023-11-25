@@ -27,17 +27,14 @@ try:
     aio = Client("robcranfill", aio_key)
     print("client OK")
 
-    # Send the value 100 to a feed called "perfdata".
-    aio.send(FEED_NAME, DATA_BLORT)
-    print("send OK")
+    # # Send some data to the feed .
+    # no, don't
+    # aio.send(FEED_NAME, DATA_BLORT)
+    # print("send OK")
 
-    # Retrieve the most recent value from the feed "Foo".
-    # Access the value by reading the `value` property on the returned Data object.
-    # Note that all values retrieved from IO are strings so you might need to convert
-    # them to an int or numeric type if you expect a number.
-
-    data = aio.receive("perfdata")
-    print(f"Received value: '{data}'")
+    data = aio.data("perfdata")
+    for d in data:
+        print(f" - '{d.value}'")
 
 except Exception as e:
     print(e)

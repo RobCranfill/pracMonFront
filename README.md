@@ -20,7 +20,7 @@ This is OK for now, but isn't scalable
 
 # IOT Data
 Store: 
- * {start time (epoch seconds)}
+ * {start time (readable string)}
  * {session length (seconds)}
  * {keypress count}
 
@@ -34,9 +34,10 @@ Store:
     * TODO: can i just recall some records???
   * Updates local DB of data
   * Formats & displays chart data
- * TODO: UI framework? Or just one GET: ?
+ * TODO: UI framework? Or just one GET: handler?
 
 ## Notes
  * Use phone as hotspot???
 
+* Option to show gaps in sessions (non-stacked data) - shows practice patterns
 
