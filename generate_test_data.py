@@ -93,12 +93,12 @@ def send_data(api_key, data):
         print("Bummer!")
 
 all_days = []
-for d_gen in range(1, 8):
+for d_gen in range(1, 29):
     day_data = generate_json_test_data(year=2023, month=10, day=d_gen, hour=8)
     print(f"Generated {len(day_data)} data points:\n{day_data}")
     all_days += day_data
 
 print(f"* All days: {len(all_days)} sessions:\n{all_days}")
 
-print("NOT sending!")
+# print("NOT sending!")
 send_data(api_key, all_days)

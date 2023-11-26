@@ -54,12 +54,18 @@ def output_jscript_data(data_dict_list):
         # print(f" == {sesh_start}, {sesh_len}, {sesh_notes}")
 
         print(" {")
-        d_string = ""
         
+        # # FIXME: example
+        # print("  data: [10, 20, 20, 35, 45, 25, 0],")
+        # print("  type: 'bar',")
+        # print("  stack: 'x'")
+
+        d_string = ""
         # FIXME: this isn't right, obviously
         print("  data: [10, 20, 20, 35, 45, 25, 0],")
         print("  type: 'bar',")
         print("  stack: 'x'")
+
 
         n += 1
         if n != n_last:

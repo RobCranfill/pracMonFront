@@ -128,6 +128,28 @@ def save_to_db(data_dict_list):
     print(f"Records skipped: {skipped}")
 
 
+def output_js_for_chart(dataset):
+
+    # for each day
+    n = 0
+    for d in dataset:
+        date_str = d["startdate"]
+        session_list = d["sessions"]
+
+        # print(f"startdate = {date_str}, sess = {session_list}")
+
+        print( " {")
+        print(f"  data: {str(session_list)},")
+        print( "  type: 'bar',")
+        print( "  stack: 'x'")
+
+        n += 1
+        if n != len(dataset):
+            print(" },")
+        else:
+            print(" }")
+
+
 def main(aio_key):
 
     # try:
@@ -140,12 +162,16 @@ def main(aio_key):
 
     # output_jscript_data(data)
     
+    save_to_db(data)
+
     # these two fail if db doesn't exist; call save_to_db once to fix that.
     show_db()
     query_for_date("2023-10-02")
-    save_to_db(data)
 
-    print(f"{get_date_range('x', 7)}")
+    range_data = get_date_range('x', 7)
+    print(f"range_data: {range_data}")
+    output_js_for_chart(range_data)
+
 
     # except Exception as e:
         # print("Error:")
