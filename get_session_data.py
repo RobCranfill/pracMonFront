@@ -1,6 +1,6 @@
 # This will be called by the PHP page to generate the chart data.
 # robcranfill
-# Simply outputs the Apache EChart JSON fragment to stdout.
+# Simply outputs the Apache EChart JavaScript fragment to stdout.
 
 import json
 import sys
