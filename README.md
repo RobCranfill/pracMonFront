@@ -32,7 +32,7 @@ Store:
   * TODO: can I do that on Ionos????
   * Code retrieve ALL RECORDS ?
     * TODO: can i just recall some records???
-  * Updates local DB of data
+  * Updates local DB
   * Formats & displays chart data
  * TODO: UI framework? Or just one GET: handler?
 
