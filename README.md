@@ -1,5 +1,6 @@
 # pracMonFront
 Front-end for PracticeMonitor
+
 Using PHP, Apache EChart, Python 3.11
 
 
@@ -9,7 +10,8 @@ A MVP GUI for Practice Monitor that can run on my web host, for demo purposes.
 
 ## Dev environment
 
-Desktop Ubuntu, Python 3.11 venv, PHP built-in web server
+Desktop Ubuntu, MS VS Code, Python 3.11 venv, PHP built-in web server
+
 
 # Architecture
 This is OK for now, but isn't scalable
@@ -18,11 +20,13 @@ This is OK for now, but isn't scalable
   * Python script watching keyboard
   * At end of each session, uploads session data to cloud (see data format below)
 
+
 # IOT Data
 Store: 
  * {start time (readable string)}
  * {session length (seconds)}
  * {keypress count}
+
 
 # App front end
 * PHP on server
@@ -36,8 +40,8 @@ Store:
   * Formats & displays chart data
  * TODO: UI framework? Or just one GET: handler?
 
+
 ## Notes
  * Use phone as hotspot???
-
-* Option to show gaps in sessions (non-stacked data) - shows practice patterns
+ * GUI option to show gaps in sessions (non-stacked data) - shows practice patterns
 

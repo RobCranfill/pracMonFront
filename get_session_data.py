@@ -15,7 +15,8 @@ JSON_KEY_LENGTH = "SeshLength"
 JSON_KEY_NOTES  = "SeshNotes"
 
 
-def print_test_data():
+# super-simple initial test; this is what the output should look like.
+def print_dummy_data():
     print("            {")
     print("              data: [10, 20, 20, 35, 45, 25, 0],")
     print("              type: 'bar',")
@@ -55,6 +56,7 @@ def output_jscript_data(data_dict_list):
         print(" {")
         d_string = ""
         
+        # FIXME: this isn't right, obviously
         print("  data: [10, 20, 20, 35, 45, 25, 0],")
         print("  type: 'bar',")
         print("  stack: 'x'")
@@ -64,8 +66,6 @@ def output_jscript_data(data_dict_list):
             print(" },")
         else:
             print(" }")
-
-
 
 
 def main(aio_key):
@@ -82,16 +82,15 @@ def main(aio_key):
         data = aio.data("perfdata")
         output_jscript_data(data)
 
-
     except Exception as e:
         print("Error:")
         print(e)
 
 
-# does this work in PHP?
+# does this work in PHP environment? yes.
 if __name__ == "__main__":
 
-    # print_test_data()
+    # print_dummy_data()
 
     if len(sys.argv) != 2:
         print(f"Run with: {sys.argv[0]} API_KEY")
