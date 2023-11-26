@@ -23,7 +23,7 @@ This is OK for now, but isn't scalable
 
 # IOT Data
 Store: 
- * {start time (readable string)}
+ * {start time (ISO format date & time)}
  * {session length (seconds)}
  * {keypress count}
 
