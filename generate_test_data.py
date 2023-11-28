@@ -11,29 +11,9 @@ import time
 from Adafruit_IO import Client
 
 
-if len(sys.argv) != 2:
-    print("Must provide API key!")
-    sys.exit(1)
-api_key = sys.argv[1]
 
 # This works for a feed in the "Default" group
-FEED_NAME = "perfdata"
-
-# How is this name supposed to be formatted? neither "/" nor "." work.
-# FEED_NAME = "PracticeMonitor.perfdata"
-# Perhaps all lower case would have worked. Not sure I want to use a group anyway.
-#
-# >>> from Adafruit_IO import Client
-# >>> aio = Client("robcranfill", "XXX")
-# >>> f = aio.feeds()
-# >>> f
-# [Feed(name='perfdata', key='perfdata', id=2660025, description='Feed for PerformanceMonitor project.', 
-# unit_type=None, unit_symbol=None, history=True, visibility='private', license=None, status_notify=False, 
-# status_timeout=4320), 
-# Feed(name='perfdata', key='practicemonitor.perfdata', id=2660022, description='', 
-# unit_type=None, unit_symbol=None, history=True, visibility='private', license=None, status_notify=False, 
-# status_timeout=4320)]
-#
+# FEED_NAME = "test_data_1"
 
 
 JSON_KEY_START  = "SeshStart"
@@ -79,26 +59,41 @@ def generate_json_test_data(year=2023, month=1, day=1, hour=9):
     return result
 
 
-def send_data(api_key, data):
+def send_data(api_key, feed, data):
     try:
         aio = Client("robcranfill", api_key)
         print("client OK")
-
-        for d in data:
-            aio.send(FEED_NAME, d)
-        print("send OK")
-
     except Exception as e:
         print(e)
         print("Bummer!")
 
-all_days = []
-for d_gen in range(1, 29):
-    day_data = generate_json_test_data(year=2023, month=10, day=d_gen, hour=8)
-    print(f"Generated {len(day_data)} data points:\n{day_data}")
-    all_days += day_data
+    throttle = 1.0
+    print(f"* Sending {len(data)} session records to feed '{feed}', throttled by {throttle} seconds....")
+    i = 0
+    for d in data:
+        i += 1
+        print(f"sending data record {i}")
+        aio.send(feed, d)
+        time.sleep(throttle)
+    print("send OK")
 
-print(f"* All days: {len(all_days)} sessions:\n{all_days}")
 
-# print("NOT sending!")
-send_data(api_key, all_days)
+if __name__ == "__main__":
+
+    if len(sys.argv) != 3:
+        print("Must provide API key & feed key!")
+        sys.exit(1)
+    api_key = sys.argv[1]
+    feed_key = sys.argv[2] # note: feed "key", not "name"!
+
+    all_days = []
+    for d_gen in range(1, 31):
+        day_data = generate_json_test_data(year=2023, month=10, day=d_gen, hour=8)
+        # print(f"Generated {len(day_data)} data points:\n{day_data}")
+        all_days += day_data
+
+    # print(f"* All days: {len(all_days)} sessions:\n{all_days}")
+
+    send_data(api_key, feed_key, all_days)
+
+    print("done!")

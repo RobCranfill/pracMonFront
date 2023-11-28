@@ -1,6 +1,7 @@
 # test code to figure this all out.
 # download all data (?) from cloud service, update local db
-# robcranfill
+# most of this code now used in get_session_data
+
 
 import datetime
 import json
