@@ -12,6 +12,17 @@
 
   <body>
 
+
+<?php
+
+// in mm/dd/yyyy format
+$start = $_GET['start'];
+if ($start == null) {
+  $start = '2023-10-09';
+  }
+
+?>
+
     <!-- Prepare a DOM with a defined width and height for ECharts -->
     <div id="main" style="width: 600px;height:400px;"></div>
 
@@ -19,15 +30,6 @@
       
       // Initialize the echarts instance based on the prepared dom
       var myChart = echarts.init(document.getElementById('main'));
-
-      <?php
-
-      // in mm/dd/yyyy format
-      $start = $_GET['start'];
-      if ($start == null) {
-        $start = '11/01/2023';
-        }
-      ?>
 
       // Specify the configuration items and data for the chart
       var option = {
@@ -42,17 +44,11 @@
         series: [
 
           <?php
-
-            // in ISO format
-            $start = $_GET['start'];
-            if ($start == null) {
-              $start = '2023-10-01';
-            }
       
           // calling php - was /usr/bin/python3
           // echo "// start is $start\n";
 
-          passthru("python3 ./get_session_data.py `cat ./aio_secret.text` test-data-1 2023-10-04");
+          passthru("python3 ./get_session_data.py `cat ./aio_secret.text` test-data-1 $start");
           ?>
         ]
       };
@@ -60,9 +56,6 @@
       // Display the chart using the configuration items and data just specified.
       myChart.setOption(option);
     </script>
-
-
-<?php echo '<p>Sup Cran!</p>'; ?>
 
 <br>
 <?php phpinfo(); ?>
