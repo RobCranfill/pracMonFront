@@ -52,6 +52,11 @@ Store:
  * Use phone as hotspot???
  * GUI option to show gaps in sessions (non-stacked data) - shows practice patterns
 
+## Problems, Questions
+* How to install needed Python libs on Ionos?
+  * And so PHP will see them
+
+  
 ## code
 * generate_test_data.py - As it says, generates test data to send to AIO. Limit 30 records in 10 minutes???
 * get_session_data.py - Retrieve all records from AIO, save news ones (if any) to local DB, output JS.

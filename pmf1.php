@@ -41,16 +41,18 @@
         yAxis: {},
         series: [
 
-          // invoke our Python code to retrieve the IOT data!
           <?php
 
-            // in yy/mm/dd format
+            // in ISO format
             $start = $_GET['start'];
             if ($start == null) {
-              $start = '11/01/2023';
+              $start = '2023-10-01';
             }
       
-          passthru('/usr/bin/python3 ./get_session_data.py `cat aio_secret.text` $start');
+          // calling php - was /usr/bin/python3
+          // echo "// start is $start\n";
+
+          passthru("python3 ./get_session_data.py `cat ./aio_secret.text` test-data-1 2023-10-04");
           ?>
         ]
       };
@@ -60,7 +62,9 @@
     </script>
 
 
-<?php echo '<p>Hello Cran!</p>'; ?>
+<?php echo '<p>Sup Cran!</p>'; ?>
+
+<br>
 <?php phpinfo(); ?>
 
   </body>

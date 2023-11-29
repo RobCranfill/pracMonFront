@@ -57,7 +57,7 @@ def query_for_date(date_str):
 
 def save_to_db(data_dict_list):
 
-    print("Attempting to save ALL records; FIXME:")
+    # print("Attempting to save ALL records; FIXME:")
 
     con = sqlite3.connect(DB_NAME)
     cur = con.cursor()
@@ -66,9 +66,10 @@ def save_to_db(data_dict_list):
         try: 
             cur.execute("CREATE TABLE perfdata(startdate STRING PRIMARY KEY, duration, keypresses)")
         except:
-            print("Table exists? OK, continuing....")
+            # print("Table exists? OK, continuing....")
+            pass
     except Exception as e:
-        print(e)
+        print(f"<p>Error: {e}</p>")
         return
 
     skipped = 0
@@ -91,7 +92,7 @@ def save_to_db(data_dict_list):
 
     con.commit()    
     con.close()
-    print(f"Records skipped: {skipped}")
+    # print(f"Records skipped: {skipped}")
 
 
 def list_of_ints_from_str(str):
@@ -126,8 +127,8 @@ def output_js_for_chart(dataset):
         if len(this_day) > longest:
             longest = len(this_day)
 
-    print(f"\nsession list: {day_data}")
-    print(f"\n longest: {longest}")
+    # print(f"\nsession list: {day_data}")
+    # print(f"\n longest: {longest}")
 
     # pad to longest
     for d in day_data:
@@ -136,49 +137,45 @@ def output_js_for_chart(dataset):
             for i in range(longest -(len(d))):
                 d.append(0)
         # print(f" = pad {d}")
-    print(f"padded session list:\n{day_data}")
+    # print(f"padded session list:\n{day_data}")
+
 
     # rotate
     # thanks to https://stackoverflow.com/questions/8421337/rotating-a-two-dimensional-array-in-python
     rotated_days = list(zip(*day_data[::-1]))
     # print(f"rotated session list: {rotated_days}")
 
-    # for some reason each new row is reversed. fix.
     i = 0
     for r in rotated_days:
 
-        print( "]]]] {")
-        print(f"]]]] data: {str(list(reversed(r)))}")
-        print( "]]]]  type: 'bar',")
-        print( "]]]]  stack: 'x'")
+        print(" {")
+        # for some reason each new row is reversed. ouput it correctly.
+        print(f"  data: {str(list(reversed(r)))},")
+        print( "  type: 'bar',")
+        print( "  stack: 'x'")
 
         i += 1
-        if i == longest:
-            print("]]]] }")
+        if i < longest:
+            print(" },")
         else:
-            print("]]]] },")
+            print(" }")
 
 
-    oldCode = False
-    if oldCode:
-        # for each day
-        n = 0
-        for d in dataset:
-            date_str = d["startdate"]
-            session_list = d["sessions"]
-
-            # print(f"startdate = {date_str}, sess = {session_list}")
-
-            print( " {")
-            print(f"  data: {str(session_list)},")
-            print( "  type: 'bar',")
-            print( "  stack: 'x'")
-
-            n += 1
-            if n != len(dataset):
-                print(" },")
-            else:
-                print(" }")
+    #     # for each day
+    #     n = 0
+    #     for d in dataset:
+    #         date_str = d["startdate"]
+    #         session_list = d["sessions"]
+    #         # print(f"startdate = {date_str}, sess = {session_list}")
+    #         print( " {")
+    #         print(f"  data: {str(session_list)},")
+    #         print( "  type: 'bar',")
+    #         print( "  stack: 'x'")
+    #         n += 1
+    #         if n != len(dataset):
+    #             print(" },")
+    #         else:
+    #             print(" }")
 
 
 
@@ -202,13 +199,13 @@ def get_date_range(start_date, number_of_days):
 #
 def main(aio_key, feed_key, query_date):
 
-    print(f"get_session_data: XXX {query_date}")
+    # print(f"<!-- get_session_data: XXX {query_date} -->")
 
 # first, update the database
 
     # try:
     aio = Client("robcranfill", aio_key)
-    print("client OK")
+    # print("client OK")
 
     # FIXME: this gets *all* the data.
     data = aio.data(feed_key)
@@ -220,7 +217,7 @@ def main(aio_key, feed_key, query_date):
 # next, query the db for the data and output it
 
     range_data = get_date_range(query_date, 7)
-    print(f"range_data: {range_data}")
+    # print(f"range_data: {range_data}")
     output_js_for_chart(range_data)
 
     # except Exception as e:
@@ -231,7 +228,10 @@ def main(aio_key, feed_key, query_date):
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
-        print(f"Run with: {sys.argv[0]}  {{API_KEY}}  {{FEED_KEY}}  {{QUERY_DATE}}")
+        print(f"// error: Run with: {sys.argv[0]}  {{API_KEY}}  {{FEED_KEY}}  {{QUERY_DATE}}")
+        print(f"// len(argv) = {len(sys.argv)}")
+        for a in sys.argv:
+            print(f"// arg: {a}")
         sys.exit(1)
 
     main(sys.argv[1], sys.argv[2], sys.argv[3])
